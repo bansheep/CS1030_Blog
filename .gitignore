@@ -1,3 +1,5 @@
 b_env/
 __pycache__/
 *.sqlite3
+blog/__pycache__/
+blogs/__pycache__/
