@@ -34,6 +34,9 @@ INSTALLED_APPS = [
     # My apps
     'blogs',
     'users',
+
+    # Third party apps
+    'bootstrap4',
         
     # Default django apps
     'django.contrib.admin',
@@ -123,3 +126,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
+
+
+# My settings
+LOGIN_URL = 'users:login'

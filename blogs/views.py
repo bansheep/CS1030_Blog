@@ -1,4 +1,7 @@
 from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
+from django.http import Http404
+
 from .models import BlogPost
 from .forms import BlogPostForm
 
@@ -19,6 +22,7 @@ def blog_post(request, blog_post_id):
     context={'blog_post':blog_post}
     return render(request, 'blogs/blog_post.html', context)
 
+@login_required
 def new_post(request):
     """Add a new blog post"""
     if request.method != 'POST':
@@ -28,6 +32,9 @@ def new_post(request):
         # POST data submitted; process data
         form = BlogPostForm(data=request.POST)
         if form.is_valid():
+            new_post = form.save(commit=False)
+            new_topic.owner = request.user
+            new_topic.save()
             form.save()
             return redirect('blogs:blog_posts')
 
@@ -35,9 +42,13 @@ def new_post(request):
     context = {'form':form}
     return render(request, 'blogs/new_post.html', context)
     
+@login_required
 def edit_blog_post(request, blog_post_id):
     """Editing an existing blog post"""
     blog_post = BlogPost.objects.get(id=blog_post_id)
+
+    if blog_post.owner != request.user:
+        raise Http404
 
     if request.method != 'POST':
         # Initial requst; pre-fill form with the current entry

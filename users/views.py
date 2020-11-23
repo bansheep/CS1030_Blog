@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm
 
@@ -6,7 +6,7 @@ def register(request):
     """Register a new user"""
     if request.method != 'POST':
         # Display blank registration form
-        form = UserCreationFrom()
+        form = UserCreationForm()
     else:
         # Process completed form
         form = UserCreationForm(data=request.POST)
@@ -19,7 +19,7 @@ def register(request):
 
     # Display a blank or invalid form
     context = {'form':form}
-    return render(request, 'blogs/register.html', context)
+    return render(request, 'registration/register.html', context)
 
 
 # Create your views here.
